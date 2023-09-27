@@ -1,9 +1,9 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  Entity,
   ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Room } from "./Room";
 import { Vote } from "./Vote";

@@ -1,16 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  Entity,
   ManyToMany,
-  JoinTable,
+  ManyToOne,
   OneToMany,
   OneToOne,
+  PrimaryGeneratedColumn
 } from "typeorm";
+import { RoomConfig } from "./Config";
 import { User } from "./User";
 import { Vote } from "./Vote";
-import { RoomConfig } from "./Config";
 
 @Entity()
 export class Room {

@@ -1,9 +1,8 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   Column,
+  Entity,
   OneToOne,
+  PrimaryGeneratedColumn
 } from "typeorm";
 import { Room } from "./Room";
 
