@@ -1,44 +1,15 @@
 import "dotenv/config";
 import "reflect-metadata";
-import fs from "fs";
-import path from "path";
 
 import bodyParser from "body-parser";
 import cors from "cors";
-import express, { Request, Response, NextFunction, Router } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import { AppDataSource } from "./data-source";
+import { routes } from "./routes";
 import AppError from "./utils/custom-error/appError";
-import {AppDataSource} from "./data-source";
-
-interface IRoute {
-  path: string;
-  router: Router;
-}
-
-const getRoutes = (): IRoute[] => {
-  const routes: IRoute[] = [];
-  const normalizedPath = path.join(__dirname, "api");
-  fs.readdirSync(normalizedPath).forEach((modelsDir) => {
-    const modelDirPath = path.join(normalizedPath, modelsDir);
-    fs.readdirSync(modelDirPath).forEach((routeFile) => {
-      if (routeFile.endsWith(".ts")) {
-        const routeFilePath = path.join(modelDirPath, routeFile);
-        const route = require(routeFilePath).default;
-        const routeName = routeFile.replace(".ts", "");
-        routes.push({ path: `/${modelsDir}/${routeName}`, router: route });
-      }
-    });
-  });
-  return routes;
-};
-
-const foundRoutes = getRoutes();
-const routes = Router();
-foundRoutes.forEach((route) => {
-  routes.use(route.path, route.router);
-});
 
 const app = express();
 
@@ -60,6 +31,8 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     status: "error",
   });
 });
+
+app.use("/api", routes);
 
 app
   .listen(process.env.PORT || 3000, () => {
