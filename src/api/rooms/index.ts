@@ -1,19 +1,22 @@
 import { Router } from "express";
 
-import { createRoom } from "./createRoom";
-import { deleteRoom } from "./deleteRoom";
-import { editRoomConfig } from "./editRoomConfig";
-import { getRoom } from "./getRoom";
-import { paginateRooms } from "./paginateRooms";
-import { updateRoom } from "./updateRoom";
+import {
+  createRoomValidation,
+  deleteRoomValidation,
+  editRoomConfigValidation,
+  getRoomValidation,
+  paginateRoomsValidation,
+  updateRoomValidation,
+} from "./validator/roomsValidators";
 
-import { createRoomValidation } from "./validator/createRoomValidation";
-import { deleteRoomValidation } from "./validator/deleteRoomValidation";
-import { editRoomConfigValidation } from "./validator/editRoomConfigValidation";
-import { getRoomValidation } from "./validator/getRoomValidation";
-import { paginateRoomsValidation } from "./validator/paginateRoomsValidation";
-import { updateRoomValidation } from "./validator/updateRoomValidation";
-
+import {
+  createRoom,
+  deleteRoom,
+  editRoomConfig,
+  getRoom,
+  paginateRooms,
+  updateRoom,
+} from "./controllers/roomsControllers";
 
 const roomsRouter = Router();
 

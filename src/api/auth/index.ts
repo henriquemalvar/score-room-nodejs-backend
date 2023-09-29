@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { forgotPassword } from "./forgotPassword";
-import { login } from "./login";
-import { register } from "./register";
+import {
+    forgotPasswordValidation,
+    loginValidation,
+    registerValidation,
+} from "./validator/authValidators";
 
-import { forgotPasswordValidation } from "./validator/forgotPasswordValidation";
-import { loginValidation } from "./validator/loginValidation";
-import { registerValidation } from "./validator/registerValidation";
+import { forgotPassword, login, register } from "./controllers/authControllers";
 
 const authRouter = Router();
 

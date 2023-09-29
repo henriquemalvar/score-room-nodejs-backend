@@ -1,14 +1,18 @@
 import { Router } from "express";
 
-import { createUser } from "./createUser";
-import { getUserById } from "./getUserById";
-import { getUsers } from "./getUsers";
-import { updateUser } from "./updateUser";
+import {
+  createUser,
+  getUserById,
+  getUsers,
+  updateUser,
+} from "./controllers/usersControllers";
 
-import { createUserValidation } from "./validator/createUserValidation";
-import { getUserByIdValidation } from "./validator/getUserByIdValidation";
-import { getUsersValidation } from "./validator/getUsersValidation";
-import { updateUserValidation } from "./validator/updateUserValidation";
+import {
+  createUserValidation,
+  getUserByIdValidation,
+  getUsersValidation,
+  updateUserValidation,
+} from "./validator/usersValidators";
 
 const usersRouter = Router();
 
