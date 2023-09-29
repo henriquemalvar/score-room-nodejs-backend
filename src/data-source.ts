@@ -1,51 +1,5 @@
 import "dotenv/config";
 import { DataSource } from "typeorm";
-import * as fs from "fs";
-import * as path from "path";
-
-class DynamicDataSource {
-  dir: string;
-  files: string[];
-  entities: any[];
-  migrations: any[];
-  constructor() {
-    this.dir = "";
-    this.files = [];
-    this.entities = [];
-    this.migrations = [];
-  }
-
-  public async init(): Promise<any[]> {
-    this.dir = path.join(__dirname, "./models");
-    this.files = fs
-      .readdirSync(this.dir)
-      .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
-
-    await Promise.all(
-      this.files.map(async (file) => {
-        const entity = await import(path.join(this.dir, file));
-        this.entities.push(entity.default || entity);
-      })
-    );
-
-    this.dir = path.join(__dirname, "./migrations");
-    this.files = fs
-      .readdirSync(this.dir)
-      .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
-
-    await Promise.all(
-      this.files.map(async (file) => {
-        const migration = await import(path.join(this.dir, file));
-        this.migrations.push(migration.default || migration);
-      })
-    );
-
-    return this.entities;
-  }
-}
-
-const dynamicDataSource = new DynamicDataSource();
-dynamicDataSource.init();
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -56,7 +10,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: dynamicDataSource.entities,
+  entities: ["src/models/*.ts"],
   subscribers: [],
-  migrations: dynamicDataSource.migrations,
+  migrations: ["src/migrations/*.ts"],
 });
