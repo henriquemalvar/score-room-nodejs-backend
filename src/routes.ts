@@ -4,8 +4,10 @@ import authRouter from "./api/auth";
 import roomsRouter from "./api/rooms";
 import votesRouter from "./api/votes";
 
-export const routes = Router();
-routes.get("/users", usersRouter);
-routes.get("/auth", authRouter);
-routes.get("/rooms", roomsRouter);
-routes.get("/votes", votesRouter);
+const routes = Router();
+routes.use("/users", usersRouter);
+routes.use("/auth", authRouter);
+routes.use("/rooms", roomsRouter);
+routes.use("/votes", votesRouter);
+
+export default routes;

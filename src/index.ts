@@ -8,8 +8,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import { AppDataSource } from "./data-source";
-import { routes } from "./routes";
+
 import AppError from "./utils/custom-error/appError";
+import routes from "./routes";
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.use("/api", routes);
+app.use("/", routes);
 
 app
   .listen(process.env.PORT || 3000, () => {
