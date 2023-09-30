@@ -14,7 +14,7 @@ export const getUserByIdValidation = celebrate({
   }),
 });
 
-export const getUsersValidation = celebrate({
+export const paginateUsersValidation = celebrate({
   [Segments.QUERY]: Joi.object().keys({
     page: Joi.number().optional(),
     perPage: Joi.number().optional(),

@@ -33,6 +33,18 @@ export const createUser = async (request: Request, response: Response) => {
 
 export const getUsers = async (request: Request, response: Response) => {
   try {
+    const repository = AppDataSource.getRepository(User);
+    const users = await repository.find();
+    return response.status(200).json({
+      data: users,
+    });
+  } catch (error) {
+    throw new AppError("Internal server error", 500);
+  }
+}
+
+export const paginateUsers = async (request: Request, response: Response) => {
+  try {
     const { page, perPage, filters } = request.query as unknown as {
       page: number;
       perPage: number;
