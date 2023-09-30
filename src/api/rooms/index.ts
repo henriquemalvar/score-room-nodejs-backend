@@ -22,7 +22,7 @@ const roomsRouter = Router();
 
 roomsRouter.get("/paginate", paginateRoomsValidation, paginateRooms);
 
-roomsRouter.get("/", getRoomValidation, getRoom);
+roomsRouter.get("/:id", getRoomValidation, getRoom);
 
 roomsRouter.post("/", createRoomValidation, createRoom);
 
