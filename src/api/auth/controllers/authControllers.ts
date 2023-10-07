@@ -11,10 +11,10 @@ export const login = async (req: Request, res: Response) => {
       where: { email },
     })
     .then((user: any) => user)
-    .catch((err) => new AppError(err.message, 500));
+    .catch((err) => res.status(500).json({ message: err.message }));
 
   if (!user) {
-    throw new AppError("Invalid credentials", 401);
+    return res.status(404).json({ message: "User not found" });
   }
 
   const auth = new AuthServices();
@@ -22,13 +22,13 @@ export const login = async (req: Request, res: Response) => {
   const isPasswordValid = await auth.comparePassword(password, user.password);
 
   if (!isPasswordValid) {
-    throw new AppError("Invalid credentials", 401);
+    return res.status(401).json({ message: "Invalid password" });
   }
 
   const token = auth.generateToken(user.id);
   const userWithoutPassword = { ...user, password: undefined };
 
-  res.status(200).json({ token, user: userWithoutPassword });
+  return res.status(200).json({ token, user: userWithoutPassword });
 };
 
 export const register = async (req: Request, res: Response) => {
@@ -38,10 +38,10 @@ export const register = async (req: Request, res: Response) => {
       where: { email },
     })
     .then((user: any) => user)
-    .catch((err) => new AppError(err.message, 500));
+    .catch((err) => res.status(500).json({ message: err.message }));
 
   if (user) {
-    throw new AppError("User already exists", 409);
+    return res.status(409).json({ message: "User already exists" });
   }
 
   const newUser = new User();
@@ -53,7 +53,9 @@ export const register = async (req: Request, res: Response) => {
 
   await AppDataSource.getRepository(User).save(newUser);
 
-  res.status(201).json(newUser);
+  const { password: _, ...newUserWithoutPassword } = newUser;
+
+  return res.status(201).json(newUserWithoutPassword);
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {
@@ -66,7 +68,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     .catch((err) => new AppError(err.message, 500));
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    return res.status(404).json({ message: "User not found" });
   }
   const auth = new AuthServices();
 
@@ -75,8 +77,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
   const sendEmail = auth.sendEmail(email, token);
 
   if (!sendEmail) {
-    throw new AppError("Email could not be sent", 500);
+    return res.status(500).json({ message: "Email not sent" });
   }
 
-  res.status(200).json({ message: "Email sent" });
+  return res.status(200).json({ message: "Email sent" });
 };
